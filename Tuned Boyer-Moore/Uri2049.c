@@ -6,11 +6,11 @@ void preBmBc(char *x, int m, int bmBc[])
 {
     int i;
     
-    // preenchendo alfabeto
+    // preenchendo tabela alfabeto
     for (i = 0; i < 256; ++i)
         bmBc[i] = m;
     
-    // colocando saltos para os algarismos da palavra no alfabeto
+    // configurando tabela com caracteres da palavra
     for (i = 0; i < m - 1; ++i)
         bmBc[x[i]] = m - i - 1;
 }
@@ -51,6 +51,7 @@ int TUNEDBM(char *x, char *y)
    }
    return 0;
 }
+
 int main()
 {
     // definindo variaveis pra etrada
@@ -62,26 +63,26 @@ int main()
     while (1)
     {
         // pegando palavra a ser verificada no texto
-      scanf("%s", pat);
+        scanf("%s", pat);
       
-      // caso de parada da entrada
-      if(strcmp(pat,"0") == 0)
-      {
+        // caso de parada da entrada
+        if(strcmp(pat,"0") == 0)
+        {
         break;
-    }
-      scanf("%s", txt);
+        }
+        scanf("%s", txt);
       
-      // impressão do resultado
-      printf("Instancia %d\n", count);
-      if (TUNEDBM(pat, txt))
-      {
-        printf("verdadeira\n");
+        // impressão do resultado
+        printf("Instancia %d\n", count);
+        if (TUNEDBM(pat, txt))
+        {
+            printf("verdadeira\n");
+        }
+        else
+        {
+        printf("falsa\n");
+        }
+        count++;
     }
-    else
-    {
-      printf("falsa\n");
-    }
-    count++;
-}
     return 0;
 }
