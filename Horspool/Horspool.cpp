@@ -25,7 +25,7 @@ const unsigned char* boyermoore_horspool_memmem(const unsigned char* haystack,
      */
     for (scan = 0; scan <= UCHAR_MAX; scan++) bad_char_skip[scan] = nlen;
 
-    /* Ultimo elemento da substring */
+    /* Ultimo elemento da substring uri_2651_Link_Bolado_resolução_com_o_quick_search */
     size_t last = nlen - 1;
 
     /* Preenchendo a bad character table com os valores retirados da substring */
@@ -62,3 +62,4 @@ int main()
     const unsigned char* result = boyermoore_horspool_memmem(haystack, 36, needle, 8);
     std::cout << result << std::endl;
 }
+
