@@ -3,21 +3,8 @@
 #include <limits.h>
 #include <iostream>
 
-/* Returns a pointer to the first occurrence of "needle"
- * within "haystack", or NULL if not found. Works like
- * memmem().
- */
-
 using namespace std;
-/* Returns a pointer to the first occurrence of "needle"
- * within "haystack", or NULL if not found. Works like
- * memmem().
- */
 
- /* Note: In this example needle is a Cstring. The ending
-  * 0x00 will be cut off, so you could call this example with
-  * boyermoore_horspool_memmem(haystack, hlen, "abc", sizeof("abc"))
-  */
 const unsigned char* boyermoore_horspool_memmem(const unsigned char* haystack,
     size_t hlen,
     const unsigned char* needle,
@@ -30,24 +17,21 @@ const unsigned char* boyermoore_horspool_memmem(const unsigned char* haystack,
     if (nlen <= 0 || !haystack || !needle)
         return NULL;
 
-    /* ---- Preprocess ---- */
+    /* Pré-processamento */
     /* Inicializa a bad character table */
     /* Quando um caracter que não esta na needle é
      * encontrada, podemos pular todo o tamanho da
-     * needle com segurança.
+     * needle com segurança
      */
     for (scan = 0; scan <= UCHAR_MAX; scan++) bad_char_skip[scan] = nlen;
 
-    /* Ultimo elemento da substring*/
+    /* Ultimo elemento da substring */
     size_t last = nlen - 1;
 
-    /* Preenchendo a bad character table com os valores retirados da substring
-       O calculo é feito com base nessa equação: Valor = tamanho da substring - index da letra na substring - 1,
-       nesse caso temos Valor = nLen - 1 - index.
-    */
+    /* Preenchendo a bad character table com os valores retirados da substring */
     for (scan = 0; scan < last; scan++) bad_char_skip[needle[scan]] = last - scan;
 
-    /* ---- Do the matching ---- */
+    /* Matching */
 
     /* Procurando na string enquanto a substring ainda pode ser contida nela */
     while (hlen >= nlen)
@@ -55,18 +39,14 @@ const unsigned char* boyermoore_horspool_memmem(const unsigned char* haystack,
         /* Scan do final da substring */
         for (scan = last; haystack[scan] == needle[scan]; scan--)
         {
-            /* Se o primeiro byte bater, foi encontrado. */
+            /* Se o primeiro byte bater, foi encontrado */
             if (scan == 0)
             {
                 return haystack;
             }
         }
 
-        /* Senão, precisamos pular alguns bytes e comlar novamente.
-        *  Nota-se que pulamos um valor baseado no ultimo byte da substring
-        *  não importa onde não bateu. Então se a substring for "abcd"
-        *  pulamos baseado no "d" e esse valor será 4.
-        */
+        /* Senão, precisamos pular alguns bytes e comlar novamente */
         hlen -= bad_char_skip[haystack[last]];
         haystack += bad_char_skip[haystack[last]];
     }
