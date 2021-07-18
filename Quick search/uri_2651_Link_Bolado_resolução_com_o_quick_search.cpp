@@ -6,7 +6,6 @@
 
 using namespace std;
 
-/* Bad shift character table */
 map <char, int> bad_shift_table;
 map <char, int> ::iterator itr;
 
@@ -48,7 +47,8 @@ void pre_processing(string pattern, string text){
         }        
     }
 }
-/* Return 1 if the pattern was found, 0 otherwise */
+
+/* Retorna 1 se o padrão foi encontrado, 0 caso contrário */
 int search(string pattern, string text){
 
     int pattern_index = 0;
@@ -63,7 +63,7 @@ int search(string pattern, string text){
             char_matched++;
             pattern_index++;
 
-	    /* Pattern found, no need to continue search */
+            /* Padrão encontrado, não há necessidade de continuar */
             if (char_matched == pattern.size()){
                 return 1;
         	}
@@ -85,9 +85,8 @@ int search(string pattern, string text){
 
 int quick_search(string pattern, string tetx){
 
-    /* Pre-processing stayed the same */
+    /* A fase de pré-processamento permaneceu igual */
     pre_processing(pattern, tetx);
-
     return search(pattern, tetx);
 
 }
@@ -100,7 +99,7 @@ int main(){
 
     cin >> input;
 
-    /* Convert input to lower_case */
+    /* Converte a entrada para lower_case */
     transform(input.begin(), input.end(), input.begin(),
         [](unsigned char c){ return std::tolower(c); });
 
@@ -111,3 +110,4 @@ int main(){
 
     return 0;
 }
+

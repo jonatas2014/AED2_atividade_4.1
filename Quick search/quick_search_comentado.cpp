@@ -4,13 +4,13 @@
 
 using namespace std;
 
-/* Bad shift character table */
+/* Tabela do bad shift character */
 map <char, int> bad_shift_table;
 
-/* An iterator for the map of the bad shift character table */
+/* Um iterador para o mapa da tabela do bad shift character */
 map <char, int> ::iterator itr;
 
-/* Returns last position of the char in the pattern */
+/* Retorna a última posição do caracter no padrão */
 int get_last_char_position_in_pattern(char *pattern, char ch){
 
     for (int i = strlen(pattern) - 1; i >= 0; i--){
@@ -20,7 +20,7 @@ int get_last_char_position_in_pattern(char *pattern, char ch){
 
 }
 
-/* Verify if a text character is present in the pattern */
+/* Verifica se o caracter do texto está presente no padrão */
 int is_in_the_pattern(char *pattern, char ch){
 
     int it_is = 0;
@@ -35,20 +35,20 @@ int is_in_the_pattern(char *pattern, char ch){
     return it_is;
 }
 
-/* Prepocessing */
+/* Pré-processamento */
 void pre_processing(char *pattern, char *text){
 
-    /* Construct the table by calculating for each text character its shift */
+    /* Constrói a tabela calculando para cada caracter seu deslocamento */ 
     for (int i = 0; i < strlen(text); i++){
      
-        /* If the text character is in the pattern */
+        /* Se o caracter do texto está no padrão */
         if (is_in_the_pattern(pattern, text[i]) == 1){
 
             int shift = strlen(pattern) - get_last_char_position_in_pattern(pattern, text[i]);
             bad_shift_table.insert(pair<char, int>(text[i], shift));       
         }
 
-        /* If the text character is not in the pattern */
+        /* Se o caracter do texto não está no padrão */
         else{
 
             int shift = strlen(pattern) + 1;
@@ -57,7 +57,7 @@ void pre_processing(char *pattern, char *text){
     }
 }
 
-/* Search the pattern */
+/* Busca */
 void search(char *pattern, char *text){
 
     int pattern_index = 0;
@@ -67,14 +67,15 @@ void search(char *pattern, char *text){
 
     for (int text_index = 0; text_index < strlen(text); text_index++){
         
-        /* This happens each time we have a single character match */
+        /* Correspondência de caracter */
         if (text[text_index] == pattern[pattern_index]){
 
             char_matched++;
             pattern_index++;
 
-	    /* If the number of matching characters sequence equal to pattern size */
-            /* We have a pattern match */
+	    /* Se o número de caracter correspondentes em sequência é igual ao tamnho do padrão,
+	     * temos uma ocorrência do padrão 
+	     */
             if (char_matched == strlen(pattern)){
 
 		cout << "Pattern found!\n";
@@ -86,13 +87,12 @@ void search(char *pattern, char *text){
             }
         }
 
-        /* Appy the correct shift each time we have a single character mismatch */
+        /* Não correspondência de caracter: aplicar o deslocamento correto */
         else {
             
             itr = bad_shift_table.find(text[text_index + (strlen(pattern) - pattern_index)]);
 
-            /* If the character does not correspond to one in the table */
-            /* we are no longer in the text */
+            /* Se não é um caracter do texto, isso significa o término do texto */
             if (itr->second == 0)
                 break;
 
@@ -103,12 +103,11 @@ void search(char *pattern, char *text){
         }
     }
 
-    /* If the pattern was not found */
+    /* Se nenhuma ocorrência foi encontrada */
     if (n_matched == 0)
         cout << "Pattern not found\n";
 }
 
-/* A test */
 int main()
 {
 
@@ -116,12 +115,12 @@ int main()
     
     char pattern[] = "GCAGAGAG";
     
-    /* Prepocessing phase */
+    /* Fase de pré-processamento */
     pre_processing(pattern, text);
 
-    /* Searching phase */
+    /* Fase de busca */
     search(pattern, text);
-    
     
     return 0;
 }
+
